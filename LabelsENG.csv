@@ -1,0 +1,17 @@
+﻿SELECTED_CELL,Selected cell:
+OPEN,Open
+NEW,New
+SAVE,Save
+SAVE_AS,Save As...
+PROPPERTIES,Propperties
+SAVE_LABEL,Do you want to save current file?
+CHOOSE_LANGUAGE,Choose language:
+YES,Yes
+NO,No
+INPUT_FILE_NAME,Input file name
+REEVALUATE,Reevaluate
+ADD_ROW,Add row
+REMOVE_ROW,Remove row
+ADD_COLUMN,Add column
+REMOVE_COLUMN,Remove column
+OPEN_ERROR,Error encountered during opening the file

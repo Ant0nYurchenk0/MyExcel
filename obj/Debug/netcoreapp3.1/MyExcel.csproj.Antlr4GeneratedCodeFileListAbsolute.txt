@@ -1,0 +1,6 @@
+C:\Users\anyur\Documents\prog\C#\MyExcel\obj\Debug\netcoreapp3.1\MyExcelLexer.cs
+C:\Users\anyur\Documents\prog\C#\MyExcel\obj\Debug\netcoreapp3.1\MyExcelParser.cs
+C:\Users\anyur\Documents\prog\C#\MyExcel\obj\Debug\netcoreapp3.1\MyExcelListener.cs
+C:\Users\anyur\Documents\prog\C#\MyExcel\obj\Debug\netcoreapp3.1\MyExcelBaseListener.cs
+C:\Users\anyur\Documents\prog\C#\MyExcel\obj\Debug\netcoreapp3.1\MyExcelVisitor.cs
+C:\Users\anyur\Documents\prog\C#\MyExcel\obj\Debug\netcoreapp3.1\MyExcelBaseVisitor.cs
