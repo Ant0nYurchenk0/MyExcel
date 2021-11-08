@@ -19,8 +19,10 @@ namespace MyExcel
         static public Dictionary<string, string> Labels = new Dictionary<string, string>();
         public ExcelForm()
         {
-            Labels["CHOOSE_LANGUAGE"] = "Choose language:";
             InitializeComponent();
+            Labels["CHOOSE_LANGUAGE"] = "Choose language:";
+            SaveFileDialog.Filter = "Table files(*.csv)|*.csv|All files(*.*)|*.*";
+            OpenFileDialog.Filter = "Table files(*.csv)|*.csv|All files(*.*)|*.*";
             InitTable();
             string ConfigPath = "..\\..\\..\\config.csv";
             try
@@ -93,21 +95,7 @@ namespace MyExcel
         }
         private void MainDataView_CellLeave(object sender, DataGridViewCellEventArgs e)
         {
-            try
-            {
-                if (PreviousCell != null && 
-                    PreviousCell.EditedFormattedValue != null && 
-                    PreviousCell.EditedFormattedValue.ToString() != "")
-                {
-                    string PreviousCellName = PreviousCell.OwningColumn.Name + Convert.ToString(PreviousCell.RowIndex + 1);
-                    MyExcelVisitor.tableIdentifier[PreviousCellName].Value = Convert.ToString(PreviousCell.EditedFormattedValue);
-                    PreviousCell.Value = Calculator.Evaluate(MyExcelVisitor.tableIdentifier[GetCurrentCellName()].Value);
-                }
-            }
-            catch
-            {
-                PreviousCell.Value = "ERROR";
-            }
+            ReevaluateBtn_Click(sender, e);
         }
         private void ExcelForm_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -121,7 +109,7 @@ namespace MyExcel
                 {
                     if (MainDataView.Rows[i].Cells[j] != null && 
                         MainDataView.Rows[i].Cells[j].Value != null && 
-                        MainDataView.Rows[i].Cells[j].ToString() != "")
+                        MainDataView.Rows[i].Cells[j].Value.ToString() != "")
                     {
                         string CellName = MainDataView.Rows[i].Cells[j].OwningColumn.Name + Convert.ToString(i + 1);
                         if (MyExcelVisitor.tableIdentifier.TryGetValue(CellName, out Cell cell))

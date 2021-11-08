@@ -18,7 +18,7 @@ namespace MyExcel
         {
             if (CurrentFile != null)
             {
-                Text = "MyExcel | " + CurrentFile + ".csv";
+                Text = "MyExcel | " + CurrentFile;
             }
             else
             {

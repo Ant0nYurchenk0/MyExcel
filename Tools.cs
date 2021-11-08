@@ -25,24 +25,14 @@ namespace MyExcel
 
         private void OpenLabel_Click(object sender, EventArgs e)
         {
+
             try
             {
-                string OpenFile = "";
-                FileName FNForm = new FileName();
-                DialogResult dialogresult = FNForm.ShowDialog();
-                if (dialogresult == DialogResult.OK)
-                {
-                    OpenFile = FNForm.NameOfFile;
-                    if (OpenFile == "")
-                    {
-                        return;
-                    }
-                }
-                string path = "..\\..\\..\\Saves\\" + OpenFile + ".csv";
-                FNForm.Dispose();
-                CurrentFile = OpenFile;                
+                if (OpenFileDialog.ShowDialog() == DialogResult.Cancel)
+                    return;
+                CurrentFile = OpenFileDialog.FileName;            
                 RenameWindow();
-                LoadTable(path);
+                LoadTable(CurrentFile);
                 ReevaluateBtn_Click(sender, e);                
             }
             catch
@@ -76,35 +66,31 @@ namespace MyExcel
                         lines += "\n" + item.Key + "," + item.Value.Value;
                     }
                 }
-                StreamWriter file = new StreamWriter("..\\..\\..\\Saves\\" + CurrentFile + ".csv");
+                StreamWriter file = new StreamWriter(CurrentFile);
                 file.WriteLine(lines);
                 file.Close();
             }
             catch
             {
-                MessageBox.Show("Encountered an error during saving");
+                MessageBox.Show("SAVE_ERROR");
             }
         }
 
         private void SaveAsLabel_Click(object sender, EventArgs e)
         {
-            FileName FNForm = new FileName();
-            DialogResult dialogresult = FNForm.ShowDialog();
-            if (dialogresult == DialogResult.OK)
+            try
             {
-                CurrentFile = FNForm.NameOfFile;
-                if (CurrentFile == "")
-                {
+                if (SaveFileDialog.ShowDialog() == DialogResult.Cancel)
                     return;
-                }
+                CurrentFile = SaveFileDialog.FileName;
                 RenameWindow();
                 SaveLabel_Click(sender, e);
             }
-            else
+            catch
             {
-                return;
+                MessageBox.Show("SAVE_ERROR");
             }
-            FNForm.Dispose();
+
         }
 
         private void PropsLabel_Click(object sender, EventArgs e)

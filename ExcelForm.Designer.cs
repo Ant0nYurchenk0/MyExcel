@@ -46,6 +46,8 @@ namespace MyExcel
             this.RemColBtn = new System.Windows.Forms.Button();
             this.AboutLabel = new System.Windows.Forms.Label();
             this.HelpLabel = new System.Windows.Forms.Label();
+            this.OpenFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.SaveFileDialog = new System.Windows.Forms.SaveFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.MainDataView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -244,6 +246,10 @@ namespace MyExcel
             this.HelpLabel.Text = "help";
             this.HelpLabel.Click += new System.EventHandler(this.HelpLabel_Click);
             // 
+            // OpenFileDialog
+            // 
+            this.OpenFileDialog.FileName = "Unnamed";
+            // 
             // ExcelForm
             // 
             this.AcceptButton = this.ReevaluateBtn;
@@ -298,6 +304,8 @@ namespace MyExcel
         private System.Windows.Forms.Button RemColBtn;
         private System.Windows.Forms.Label AboutLabel;
         private System.Windows.Forms.Label HelpLabel;
+        private System.Windows.Forms.OpenFileDialog OpenFileDialog;
+        private System.Windows.Forms.SaveFileDialog SaveFileDialog;
     }
 }
 

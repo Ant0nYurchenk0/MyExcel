@@ -19,3 +19,4 @@ ABOUT_LABEL,About
 ABOUT_TEXT,some aboout text
 HELP_LABEL,Help
 HELP_TEXT,some help text
+SAVE_ERROR,Error encountered during saving the file
