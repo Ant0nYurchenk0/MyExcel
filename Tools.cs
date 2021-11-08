@@ -17,6 +17,8 @@ namespace MyExcel
         private void NewLabel_Click(object sender, EventArgs e)
         {
             SaveOrNot(sender, e);
+            CurrentFile = null;
+            RenameWindow();
             EditorSpace.Clear();
             InitTable();
         }
@@ -25,7 +27,6 @@ namespace MyExcel
         {
             try
             {
-                InitTable();
                 string OpenFile = "";
                 FileName FNForm = new FileName();
                 DialogResult dialogresult = FNForm.ShowDialog();
@@ -39,7 +40,7 @@ namespace MyExcel
                 }
                 string path = "..\\..\\..\\Saves\\" + OpenFile + ".csv";
                 FNForm.Dispose();
-                CurrentFile = OpenFile;
+                CurrentFile = OpenFile;                
                 RenameWindow();
                 LoadTable(path);
                 ReevaluateBtn_Click(sender, e);                
@@ -63,6 +64,7 @@ namespace MyExcel
                     return;
                 }
                 string lines = "";
+                lines += MainDataView.RowCount.ToString() + "," + MainDataView.ColumnCount.ToString();
                 foreach (var item in MyExcelVisitor.tableIdentifier)
                 {
                     if (item.Value.Value == null || item.Value.Value == "")
@@ -123,24 +125,68 @@ namespace MyExcel
 
         private void RemRowBtn_Click(object sender, EventArgs e)
         {
-            MainDataView.Rows.RemoveAt(MainDataView.RowCount-1);
-            for (int i = 0; i < MainDataView.Columns.Count; i++)
+            try
             {
-                Cell cell = new Cell(MainDataView.Columns[i].Name, MainDataView.RowCount);
-                MyExcelVisitor.tableIdentifier[cell.Name] = null;
+                MainDataView.Rows.RemoveAt(MainDataView.RowCount - 1);
+                for (int i = 0; i < MainDataView.Columns.Count; i++)
+                {
+                    Cell cell = new Cell(MainDataView.Columns[i].Name, MainDataView.RowCount);
+                    MyExcelVisitor.tableIdentifier.Remove(cell.Name);
+                }
             }
+            catch { }
         }
 
         private void AddColBtn_Click(object sender, EventArgs e)
         {
-            var row = new DataGridViewColumn();
-            row.HeaderCell.Value = MainDataView.RowCount + 1;
-            MainDataView.Rows.Add(row);
+            var column = new DataGridViewTextBoxColumn();
+            column.Name = "";
+            int letterNum = MainDataView.Columns.Count;
+            List<int> digits = new List<int>();
+            while ((letterNum / 26) > 0) 
+            {
+                digits.Add(letterNum % 26);
+                letterNum = letterNum/26 -1 ;
+            } 
+            digits.Add(letterNum);
+            digits.Reverse();
+            foreach (int digit in digits)
+            {
+                column.Name += Convert.ToString(Convert.ToChar(digit + 65));
+            }
+            MainDataView.Columns.Add(column);
+            for (int i = 0; i < MainDataView.RowCount; i++)
+            {
+                Cell cell = new Cell(MainDataView.Columns[MainDataView.Columns.Count - 1].Name, i + 1);
+                MyExcelVisitor.tableIdentifier[cell.Name] = cell;
+            }
         }
 
         private void RemColBtn_Click(object sender, EventArgs e)
         {
+            try
+            {
+                for (int i = 0; i < MainDataView.RowCount; i++)
+                {
+                    Cell cell = new Cell(MainDataView.Columns[MainDataView.Columns.Count - 1].Name, i + 1);
+                    MyExcelVisitor.tableIdentifier.Remove(cell.Name);
+                }
+                MainDataView.Columns.RemoveAt(MainDataView.ColumnCount - 1);
+            }
+            catch { }
 
+        }
+        private void AboutLabel_Click(object sender, EventArgs e)
+        {
+            About AFrom = new About();
+            AFrom.ShowDialog(); 
+            AFrom.Dispose();
+        }
+
+        private void HelpLabel_Click(object sender, EventArgs e)
+        {
+            Help HForm = new Help();
+            HForm.Show();
         }
     }
 }

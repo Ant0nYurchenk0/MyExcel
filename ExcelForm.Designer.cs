@@ -44,7 +44,8 @@ namespace MyExcel
             this.PropsLabel = new System.Windows.Forms.Label();
             this.RemRowBtn = new System.Windows.Forms.Button();
             this.RemColBtn = new System.Windows.Forms.Button();
-            this.HelpBtn = new System.Windows.Forms.Label();
+            this.AboutLabel = new System.Windows.Forms.Label();
+            this.HelpLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.MainDataView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -221,15 +222,27 @@ namespace MyExcel
             this.RemColBtn.UseVisualStyleBackColor = true;
             this.RemColBtn.Click += new System.EventHandler(this.RemColBtn_Click);
             // 
-            // HelpBtn
+            // AboutLabel
             // 
-            this.HelpBtn.AutoSize = true;
-            this.HelpBtn.BackColor = System.Drawing.Color.Transparent;
-            this.HelpBtn.Location = new System.Drawing.Point(359, 6);
-            this.HelpBtn.Name = "HelpBtn";
-            this.HelpBtn.Size = new System.Drawing.Size(30, 15);
-            this.HelpBtn.TabIndex = 25;
-            this.HelpBtn.Text = "help";
+            this.AboutLabel.AutoSize = true;
+            this.AboutLabel.BackColor = System.Drawing.Color.Transparent;
+            this.AboutLabel.Location = new System.Drawing.Point(416, 6);
+            this.AboutLabel.Name = "AboutLabel";
+            this.AboutLabel.Size = new System.Drawing.Size(38, 15);
+            this.AboutLabel.TabIndex = 25;
+            this.AboutLabel.Text = "about";
+            this.AboutLabel.Click += new System.EventHandler(this.AboutLabel_Click);
+            // 
+            // HelpLabel
+            // 
+            this.HelpLabel.AutoSize = true;
+            this.HelpLabel.BackColor = System.Drawing.Color.Transparent;
+            this.HelpLabel.Location = new System.Drawing.Point(359, 6);
+            this.HelpLabel.Name = "HelpLabel";
+            this.HelpLabel.Size = new System.Drawing.Size(30, 15);
+            this.HelpLabel.TabIndex = 26;
+            this.HelpLabel.Text = "help";
+            this.HelpLabel.Click += new System.EventHandler(this.HelpLabel_Click);
             // 
             // ExcelForm
             // 
@@ -240,7 +253,8 @@ namespace MyExcel
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.ClientSize = new System.Drawing.Size(792, 456);
-            this.Controls.Add(this.HelpBtn);
+            this.Controls.Add(this.HelpLabel);
+            this.Controls.Add(this.AboutLabel);
             this.Controls.Add(this.RemColBtn);
             this.Controls.Add(this.RemRowBtn);
             this.Controls.Add(this.PropsLabel);
@@ -282,7 +296,8 @@ namespace MyExcel
         private System.Windows.Forms.Label PropsLabel;
         private System.Windows.Forms.Button RemRowBtn;
         private System.Windows.Forms.Button RemColBtn;
-        private System.Windows.Forms.Label HelpBtn;
+        private System.Windows.Forms.Label AboutLabel;
+        private System.Windows.Forms.Label HelpLabel;
     }
 }
 

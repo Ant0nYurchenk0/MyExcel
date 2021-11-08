@@ -15,3 +15,7 @@ REMOVE_ROW,Remove row
 ADD_COLUMN,Add column
 REMOVE_COLUMN,Remove column
 OPEN_ERROR,Error encountered during opening the file
+ABOUT_LABEL,About
+ABOUT_TEXT,some aboout text
+HELP_LABEL,Help
+HELP_TEXT,some help text

@@ -29,6 +29,8 @@ namespace MyExcel
         {
             TextReader TextReader = new StreamReader(path);
             string line = TextReader.ReadLine();
+            string[] size = line.Split(',');
+            InitTable(Convert.ToInt32(size[0]), Convert.ToInt32(size[1]));
             var table = new Dictionary<string, string>();
             while ((line = TextReader.ReadLine()) != null)
             {
@@ -119,29 +121,32 @@ namespace MyExcel
             RemColBtn.Text = Labels["REMOVE_COLUMN"];
             AddRowBtn.Text = Labels["ADD_ROW"];
             RemRowBtn.Text = Labels["REMOVE_ROW"];
+            AboutLabel.Text = Labels["ABOUT_LABEL"];
+            HelpLabel.Text = Labels["HELP_LABEL"];
         }
         public string GetCurrentCellName()
         {
             return MainDataView.CurrentCell.OwningColumn.Name + Convert.ToString(MainDataView.CurrentCell.RowIndex + 1);
         }
-        private void InitTable()
+        private void InitTable(int? Rows = null, int? Columns = null)
         {
             MainDataView.Rows.Clear();
             MainDataView.Columns.Clear();
             MainDataView.Refresh();
+            MainDataView.RowHeadersWidth = 50;
             DataGridViewColumn Column = new DataGridViewColumn();
-            for (int i = 0; (i + 1) * Column.Width < MainDataView.Width; i++)
+            for (int i = 0; Columns != null ? i < Columns : (i + 1) * Column.Width < MainDataView.Width; i++)
             {
                 Column = new DataGridViewTextBoxColumn();
                 Column.HeaderText = Convert.ToString(Convert.ToChar(65 + i));
                 Column.Name = Convert.ToString(Convert.ToChar(65 + i));
                 MainDataView.Columns.Add(Column);
             }
-            for (int j = 0; (j + 1) * MainDataView.RowTemplate.Height < MainDataView.Height; j++)
+            for (int j = 0; Rows != null ? j < Rows : (j + 2) * MainDataView.RowTemplate.Height < MainDataView.Height; j++)
             {
-                MainDataView.Rows.Add(); // var row = ...
-                MainDataView.RowHeadersWidth = 50;
-                MainDataView.Rows[j].HeaderCell.Value = Convert.ToString(j + 1); // no index
+                DataGridViewRow row = new DataGridViewRow();
+                row.HeaderCell.Value = Convert.ToString(j + 1);
+                MainDataView.Rows.Add(row);
 
             }
             CreateCells();
@@ -161,7 +166,7 @@ namespace MyExcel
 
         private string _name;
         public string Name => _name;
-        
+
 
         public Cell(string letter, int number)
         {
