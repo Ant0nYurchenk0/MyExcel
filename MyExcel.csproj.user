@@ -19,11 +19,5 @@
     <Compile Update="SaveOrNot.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="Tools.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="HelpClasses.cs">
-      <SubType>Form</SubType>
-    </Compile>
   </ItemGroup>
 </Project>

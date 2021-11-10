@@ -239,16 +239,17 @@ namespace MyExcel
             // 
             this.HelpLabel.AutoSize = true;
             this.HelpLabel.BackColor = System.Drawing.Color.Transparent;
-            this.HelpLabel.Location = new System.Drawing.Point(359, 6);
+            this.HelpLabel.Location = new System.Drawing.Point(353, 6);
             this.HelpLabel.Name = "HelpLabel";
+            this.HelpLabel.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.HelpLabel.Size = new System.Drawing.Size(30, 15);
             this.HelpLabel.TabIndex = 26;
             this.HelpLabel.Text = "help";
             this.HelpLabel.Click += new System.EventHandler(this.HelpLabel_Click);
             // 
-            // OpenFileDialog
+            // SaveFileDialog
             // 
-            this.OpenFileDialog.FileName = "Unnamed";
+            this.SaveFileDialog.FileName = "Unnamed";
             // 
             // ExcelForm
             // 
@@ -256,7 +257,6 @@ namespace MyExcel
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.ClientSize = new System.Drawing.Size(792, 456);
             this.Controls.Add(this.HelpLabel);
@@ -287,25 +287,25 @@ namespace MyExcel
         }
 
         #endregion
-        private System.Windows.Forms.RichTextBox EditorSpace;
-        private System.Windows.Forms.DataGridView MainDataView;
-        private System.Windows.Forms.TextBox CoordinateBox;
-        private System.Windows.Forms.Label CoordLabel;
-        private System.Windows.Forms.Label FuncLabels;
-        private System.Windows.Forms.Button ReevaluateBtn;
-        private System.Windows.Forms.Button AddRowBtn;
-        private System.Windows.Forms.Button AddColBtn;
-        private System.Windows.Forms.Label NewLabel;
-        private System.Windows.Forms.Label OpenLabel;
-        private System.Windows.Forms.Label SaveLabel;
-        private System.Windows.Forms.Label SaveAsLabel;
-        private System.Windows.Forms.Label PropsLabel;
-        private System.Windows.Forms.Button RemRowBtn;
-        private System.Windows.Forms.Button RemColBtn;
-        private System.Windows.Forms.Label AboutLabel;
-        private System.Windows.Forms.Label HelpLabel;
-        private System.Windows.Forms.OpenFileDialog OpenFileDialog;
-        private System.Windows.Forms.SaveFileDialog SaveFileDialog;
+        public System.Windows.Forms.RichTextBox EditorSpace;
+        public System.Windows.Forms.DataGridView MainDataView;
+        public System.Windows.Forms.TextBox CoordinateBox;
+        public System.Windows.Forms.Label CoordLabel;
+        public System.Windows.Forms.Label FuncLabels;
+        public System.Windows.Forms.Button ReevaluateBtn;
+        public System.Windows.Forms.Button AddRowBtn;
+        public System.Windows.Forms.Button AddColBtn;
+        public System.Windows.Forms.Label NewLabel;
+        public System.Windows.Forms.Label OpenLabel;
+        public System.Windows.Forms.Label SaveLabel;
+        public System.Windows.Forms.Label SaveAsLabel;
+        public System.Windows.Forms.Label PropsLabel;
+        public System.Windows.Forms.Button RemRowBtn;
+        public System.Windows.Forms.Button RemColBtn;
+        public System.Windows.Forms.Label AboutLabel;
+        public System.Windows.Forms.Label HelpLabel;
+        public System.Windows.Forms.OpenFileDialog OpenFileDialog;
+        public System.Windows.Forms.SaveFileDialog SaveFileDialog;
     }
 }
 

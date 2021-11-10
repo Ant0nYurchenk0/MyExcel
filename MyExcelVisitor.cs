@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Antlr4.Runtime;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 namespace MyExcel
 {
     class MyExcelVisitor : MyExcelBaseVisitor<double>
@@ -94,7 +90,7 @@ namespace MyExcel
                     return Convert.ToDouble(left > right);
                     break;
                 case MyExcelLexer.LESS:
-                    Debug.WriteLine("{0} < 1}", left, right);
+                    Debug.WriteLine("{0} < {1}", left, right);
                     return Convert.ToDouble(left < right);
                     break;
                 default:

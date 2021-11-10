@@ -1,60 +1,144 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.Text.RegularExpressions;
 
+
 namespace MyExcel
 {
-    public partial class ExcelForm : Form
+    public static class Tools
     {
-        private void NewLabel_Click(object sender, EventArgs e)
+        public static void MainDataView_CellClick(dynamic form, object sender, DataGridViewCellEventArgs e)
         {
-            SaveOrNot(sender, e);
-            CurrentFile = null;
-            RenameWindow();
-            EditorSpace.Clear();
-            InitTable();
-        }
+            try
+            {
+                if (MyExcelVisitor.tableIdentifier.TryGetValue(HelpClass.GetCurrentCellName(form), out Cell cell))
+                {
+                    form.EditorSpace.Text = cell.Value;
+                    form.MainDataView.CurrentCell.Value = cell.Value;
 
-        private void OpenLabel_Click(object sender, EventArgs e)
+                }
+            }
+            catch { }
+            finally
+            {
+                form.PreviousCell = form.MainDataView.CurrentCell;
+                form.CoordinateBox.Text = HelpClass.GetCurrentCellName(form);
+
+            }
+        }
+        public static void EditorSpace_TextChanged(dynamic form, object sender, EventArgs e)
+        {
+            form.EditorSpace.SelectionColor = Color.Black;
+            form.EditorSpace.SelectionFont = new Font("Segoe UI", 9, FontStyle.Regular);
+            try
+            {
+                MyExcelVisitor.tableIdentifier[HelpClass.GetCurrentCellName(form)].Value = form.EditorSpace.Text;
+                form.MainDataView.CurrentCell.Value = form.EditorSpace.Text;
+                Calculator.Evaluate(form.EditorSpace.Text);
+            }
+            catch (Exception ex)
+            {
+                Regex regex = new Regex(@"'(\w*\W*)'");
+                MatchCollection matches = regex.Matches(ex.Message);
+                int index = form.EditorSpace.Text.IndexOf(Convert.ToString(matches[0])[1]);
+                string text = form.EditorSpace.Text;
+                form.EditorSpace.Text = "";
+                for (int i = 0; i < text.Length; i++)
+                {
+                    if (i != index)
+                    {
+                        form.EditorSpace.SelectedText = text[i].ToString();
+                    }
+                    else
+                    {
+                        form.EditorSpace.SelectionColor = Color.Red;
+                        form.EditorSpace.SelectionFont = new Font("Segoe UI", 9, FontStyle.Underline);
+                        form.EditorSpace.SelectedText = Convert.ToString(matches[0])[1].ToString();
+                        form.EditorSpace.SelectionColor = Color.Black;
+                        form.EditorSpace.SelectionFont = new Font("Segoe UI", 9, FontStyle.Regular);
+                    }
+                }
+            }
+
+        }
+        public static void EditorSpace_Click(dynamic form, object sender, EventArgs e)
+        {
+            form.PreviousCell = form.MainDataView.Rows[form.MainDataView.CurrentCell.RowIndex].Cells[form.MainDataView.CurrentCell.ColumnIndex];
+        }
+        public static void MainDataView_CellLeave(dynamic form, object sender, DataGridViewCellEventArgs e)
+        {
+            ReevaluateBtn_Click(form, sender, e);
+        }
+        public static void ExcelForm_FormClosing(dynamic form, object sender, FormClosingEventArgs e)
+        {
+            HelpClass.SaveOrNot(form, sender, e);
+        }
+        public static void ReevaluateBtn_Click(dynamic form, object sender, EventArgs e)
+        {
+            for (int i = 0; i < form.MainDataView.Rows.Count; i++)
+            {
+                for (int j = 0; j < form.MainDataView.Columns.Count; j++)
+                {
+                    if (form.MainDataView.Rows[i].Cells[j] != null &&
+                        form.MainDataView.Rows[i].Cells[j].Value != null &&
+                        form.MainDataView.Rows[i].Cells[j].Value.ToString() != "")
+                    {
+                        string CellName = form.MainDataView.Rows[i].Cells[j].OwningColumn.Name + Convert.ToString(i + 1);
+                        if (MyExcelVisitor.tableIdentifier.TryGetValue(CellName, out Cell cell))
+                        {
+                            try
+                            {
+                                form.MainDataView.Rows[i].Cells[j].Value = Calculator.Evaluate(cell.Value);
+                            }
+                            catch
+                            {
+                                form.MainDataView.Rows[i].Cells[j].Value = "ERROR";
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        public static void NewLabel_Click(dynamic form, object sender, EventArgs e)
+        {
+            HelpClass.SaveOrNot(form, sender, e);
+            form.CurrentFile = null;
+            HelpClass.RenameWindow(form);
+            HelpClass.InitTable(form);
+        }
+        public static void OpenLabel_Click(dynamic form, object sender, EventArgs e)
         {
 
             try
             {
-                if (OpenFileDialog.ShowDialog() == DialogResult.Cancel)
+                if (form.OpenFileDialog.ShowDialog() == DialogResult.Cancel)
                     return;
-                CurrentFile = OpenFileDialog.FileName;            
-                RenameWindow();
-                LoadTable(CurrentFile);
-                ReevaluateBtn_Click(sender, e);                
+                form.CurrentFile = form.OpenFileDialog.FileName;
+                HelpClass.RenameWindow(form);
+                HelpClass.LoadTable(form, form.CurrentFile);
+                ReevaluateBtn_Click(form, sender, e);
             }
             catch
             {
-                MessageBox.Show(Labels["OPEN_ERROR"]);
+                MessageBox.Show(ExcelForm.Labels["OPEN_ERROR"]);
                 return;
             }
 
-            
         }
-
-        private void SaveLabel_Click(object sender, EventArgs e)
+        public static void SaveLabel_Click(dynamic form, object sender, EventArgs e)
         {
             try
             {
-                if (CurrentFile == null)
+                if (form.CurrentFile == null)
                 {
-                    SaveAsLabel_Click(sender, e);
+                    SaveAsLabel_Click(form, sender, e);
                     return;
                 }
                 string lines = "";
-                lines += MainDataView.RowCount.ToString() + "," + MainDataView.ColumnCount.ToString();
+                lines += form.MainDataView.RowCount.ToString() + "," + form.MainDataView.ColumnCount.ToString();
                 foreach (var item in MyExcelVisitor.tableIdentifier)
                 {
                     if (item.Value.Value == null || item.Value.Value == "")
@@ -66,7 +150,7 @@ namespace MyExcel
                         lines += "\n" + item.Key + "," + item.Value.Value;
                     }
                 }
-                StreamWriter file = new StreamWriter(CurrentFile);
+                StreamWriter file = new StreamWriter(form.CurrentFile);
                 file.WriteLine(lines);
                 file.Close();
             }
@@ -75,16 +159,15 @@ namespace MyExcel
                 MessageBox.Show("SAVE_ERROR");
             }
         }
-
-        private void SaveAsLabel_Click(object sender, EventArgs e)
+        public static void SaveAsLabel_Click(dynamic form, object sender, EventArgs e)
         {
             try
             {
-                if (SaveFileDialog.ShowDialog() == DialogResult.Cancel)
+                if (form.SaveFileDialog.ShowDialog() == DialogResult.Cancel)
                     return;
-                CurrentFile = SaveFileDialog.FileName;
-                RenameWindow();
-                SaveLabel_Click(sender, e);
+                form.CurrentFile = form.SaveFileDialog.FileName;
+                HelpClass.RenameWindow(form);
+                SaveLabel_Click(form, sender, e);
             }
             catch
             {
@@ -92,84 +175,87 @@ namespace MyExcel
             }
 
         }
-
-        private void PropsLabel_Click(object sender, EventArgs e)
+        public static void PropsLabel_Click(dynamic form, object sender, EventArgs e)
         {
-            InitLabels();
+            HelpClass.InitLabels(form);
         }
-        private void AddRowBtn_Click(object sender, EventArgs e)
+        public static void AddRowBtn_Click(dynamic form, object sender, EventArgs e)
         {
             var row = new DataGridViewRow();
-            row.HeaderCell.Value = Convert.ToString(MainDataView.RowCount + 1);
-            MainDataView.Rows.Add(row);
-            for (int i = 0; i < MainDataView.Columns.Count; i++)
+            row.HeaderCell.Value = Convert.ToString(form.MainDataView.RowCount + 1);
+            try
             {
-                Cell cell = new Cell(MainDataView.Columns[i].Name, MainDataView.RowCount);
+                form.MainDataView.Rows.Add(row);
+            }
+            catch (InvalidOperationException)
+            {
+                AddColBtn_Click(form, sender, e);
+                form.MainDataView.Rows.Add(row);
+            }
+            for (int i = 0; i < form.MainDataView.Columns.Count; i++)
+            {
+                Cell cell = new Cell(form.MainDataView.Columns[i].Name, form.MainDataView.RowCount);
                 MyExcelVisitor.tableIdentifier[cell.Name] = cell;
             }
         }
-
-        private void RemRowBtn_Click(object sender, EventArgs e)
+        public static void RemRowBtn_Click(dynamic form,object sender, EventArgs e)
         {
             try
             {
-                MainDataView.Rows.RemoveAt(MainDataView.RowCount - 1);
-                for (int i = 0; i < MainDataView.Columns.Count; i++)
+                form.MainDataView.Rows.RemoveAt(form.MainDataView.RowCount - 1);
+                for (int i = 0; i < form.MainDataView.Columns.Count; i++)
                 {
-                    Cell cell = new Cell(MainDataView.Columns[i].Name, MainDataView.RowCount);
+                    Cell cell = new Cell(form.MainDataView.Columns[i].Name, form.MainDataView.RowCount);
                     MyExcelVisitor.tableIdentifier.Remove(cell.Name);
                 }
             }
             catch { }
         }
-
-        private void AddColBtn_Click(object sender, EventArgs e)
+        public static void AddColBtn_Click(dynamic form, object sender, EventArgs e)
         {
             var column = new DataGridViewTextBoxColumn();
             column.Name = "";
-            int letterNum = MainDataView.Columns.Count;
+            int letterNum = form.MainDataView.Columns.Count;
             List<int> digits = new List<int>();
-            while ((letterNum / 26) > 0) 
+            while ((letterNum / 26) > 0)
             {
                 digits.Add(letterNum % 26);
-                letterNum = letterNum/26 -1 ;
-            } 
+                letterNum = letterNum / 26 - 1;
+            }
             digits.Add(letterNum);
             digits.Reverse();
             foreach (int digit in digits)
             {
                 column.Name += Convert.ToString(Convert.ToChar(digit + 65));
             }
-            MainDataView.Columns.Add(column);
-            for (int i = 0; i < MainDataView.RowCount; i++)
+            form.MainDataView.Columns.Add(column);
+            for (int i = 0; i < form.MainDataView.RowCount; i++)
             {
-                Cell cell = new Cell(MainDataView.Columns[MainDataView.Columns.Count - 1].Name, i + 1);
+                Cell cell = new Cell(form.MainDataView.Columns[form.MainDataView.Columns.Count - 1].Name, i + 1);
                 MyExcelVisitor.tableIdentifier[cell.Name] = cell;
             }
         }
-
-        private void RemColBtn_Click(object sender, EventArgs e)
+        public static void RemColBtn_Click(dynamic form, object sender, EventArgs e)
         {
             try
             {
-                for (int i = 0; i < MainDataView.RowCount; i++)
+                for (int i = 0; i < form.MainDataView.RowCount; i++)
                 {
-                    Cell cell = new Cell(MainDataView.Columns[MainDataView.Columns.Count - 1].Name, i + 1);
+                    Cell cell = new Cell(form.MainDataView.Columns[form.MainDataView.Columns.Count - 1].Name, i + 1);
                     MyExcelVisitor.tableIdentifier.Remove(cell.Name);
                 }
-                MainDataView.Columns.RemoveAt(MainDataView.ColumnCount - 1);
+                form.MainDataView.Columns.RemoveAt(form.MainDataView.ColumnCount - 1);
             }
             catch { }
 
         }
-        private void AboutLabel_Click(object sender, EventArgs e)
+        public static void AboutLabel_Click(dynamic form, object sender, EventArgs e)
         {
             About AFrom = new About();
-            AFrom.ShowDialog(); 
+            AFrom.ShowDialog();
             AFrom.Dispose();
         }
-
-        private void HelpLabel_Click(object sender, EventArgs e)
+        public static void HelpLabel_Click(dynamic form, object sender, EventArgs e)
         {
             Help HForm = new Help();
             HForm.Show();

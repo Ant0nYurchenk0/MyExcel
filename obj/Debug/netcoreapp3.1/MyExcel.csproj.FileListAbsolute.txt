@@ -12,6 +12,12 @@ C:\Users\anyur\Documents\prog\C#\MyExcel\obj\Debug\netcoreapp3.1\MyExcelBaseList
 C:\Users\anyur\Documents\prog\C#\MyExcel\obj\Debug\netcoreapp3.1\MyExcelVisitor.cs
 C:\Users\anyur\Documents\prog\C#\MyExcel\obj\Debug\netcoreapp3.1\MyExcelBaseVisitor.cs
 C:\Users\anyur\Documents\prog\C#\MyExcel\obj\Debug\netcoreapp3.1\MyExcel.csproj.Antlr4GeneratedCodeFileListAbsolute.txt
+C:\Users\anyur\Documents\prog\C#\MyExcel\obj\Debug\netcoreapp3.1\MyExcel.About.resources
+C:\Users\anyur\Documents\prog\C#\MyExcel\obj\Debug\netcoreapp3.1\MyExcel.ChooseLang.resources
+C:\Users\anyur\Documents\prog\C#\MyExcel\obj\Debug\netcoreapp3.1\MyExcel.ExcelForm.resources
+C:\Users\anyur\Documents\prog\C#\MyExcel\obj\Debug\netcoreapp3.1\MyExcel.FileName.resources
+C:\Users\anyur\Documents\prog\C#\MyExcel\obj\Debug\netcoreapp3.1\MyExcel.Help.resources
+C:\Users\anyur\Documents\prog\C#\MyExcel\obj\Debug\netcoreapp3.1\MyExcel.SaveOrNot.resources
 C:\Users\anyur\Documents\prog\C#\MyExcel\obj\Debug\netcoreapp3.1\MyExcel.csproj.GenerateResource.cache
 C:\Users\anyur\Documents\prog\C#\MyExcel\obj\Debug\netcoreapp3.1\MyExcel.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\anyur\Documents\prog\C#\MyExcel\obj\Debug\netcoreapp3.1\MyExcel.AssemblyInfoInputs.cache
@@ -20,10 +26,4 @@ C:\Users\anyur\Documents\prog\C#\MyExcel\obj\Debug\netcoreapp3.1\MyExcel.csproj.
 C:\Users\anyur\Documents\prog\C#\MyExcel\obj\Debug\netcoreapp3.1\MyExcel.dll
 C:\Users\anyur\Documents\prog\C#\MyExcel\obj\Debug\netcoreapp3.1\MyExcel.pdb
 C:\Users\anyur\Documents\prog\C#\MyExcel\obj\Debug\netcoreapp3.1\MyExcel.genruntimeconfig.cache
-C:\Users\anyur\Documents\prog\C#\MyExcel\obj\Debug\netcoreapp3.1\MyExcel.ChooseLang.resources
-C:\Users\anyur\Documents\prog\C#\MyExcel\obj\Debug\netcoreapp3.1\MyExcel.ExcelForm.resources
-C:\Users\anyur\Documents\prog\C#\MyExcel\obj\Debug\netcoreapp3.1\MyExcel.FileName.resources
-C:\Users\anyur\Documents\prog\C#\MyExcel\obj\Debug\netcoreapp3.1\MyExcel.SaveOrNot.resources
 C:\Users\anyur\Documents\prog\C#\MyExcel\obj\Debug\netcoreapp3.1\MyExcel.csproj.AssemblyReference.cache
-C:\Users\anyur\Documents\prog\C#\MyExcel\obj\Debug\netcoreapp3.1\MyExcel.About.resources
-C:\Users\anyur\Documents\prog\C#\MyExcel\obj\Debug\netcoreapp3.1\MyExcel.Help.resources

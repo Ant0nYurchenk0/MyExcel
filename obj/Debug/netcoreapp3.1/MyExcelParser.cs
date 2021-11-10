@@ -31,9 +31,9 @@ using DFA = Antlr4.Runtime.Dfa.DFA;
 [System.CLSCompliant(false)]
 public partial class MyExcelParser : Parser {
 	public const int
-		NUMBER=1, IDENTIFIER=2, INT=3, EXPONENT=4, MULTIPLY=5, DIVIDE=6, SUBTRACT=7, 
-		ADD=8, LPAREN=9, RPAREN=10, EQUALITY=11, GREATER=12, LESS=13, MAX=14, 
-		MIN=15, NOT=16, COMA=17, WS=18;
+		T__0=1, NUMBER=2, IDENTIFIER=3, INT=4, EXPONENT=5, MULTIPLY=6, DIVIDE=7, 
+		SUBTRACT=8, ADD=9, LPAREN=10, RPAREN=11, EQUALITY=12, GREATER=13, LESS=14, 
+		MAX=15, MIN=16, NOT=17, WS=18;
 	public const int
 		RULE_compileUnit = 0, RULE_expression = 1;
 	public static readonly string[] ruleNames = {
@@ -41,13 +41,13 @@ public partial class MyExcelParser : Parser {
 	};
 
 	private static readonly string[] _LiteralNames = {
-		null, null, null, null, "'^'", "'*'", "'/'", "'-'", "'+'", "'('", "')'", 
-		"'='", "'>'", "'<'", "'max'", "'min'", "'not'", "','"
+		null, "','", null, null, null, "'^'", "'*'", "'/'", "'-'", "'+'", "'('", 
+		"')'", "'='", "'>'", "'<'", "'max'", "'min'", "'not'"
 	};
 	private static readonly string[] _SymbolicNames = {
-		null, "NUMBER", "IDENTIFIER", "INT", "EXPONENT", "MULTIPLY", "DIVIDE", 
+		null, null, "NUMBER", "IDENTIFIER", "INT", "EXPONENT", "MULTIPLY", "DIVIDE", 
 		"SUBTRACT", "ADD", "LPAREN", "RPAREN", "EQUALITY", "GREATER", "LESS", 
-		"MAX", "MIN", "NOT", "COMA", "WS"
+		"MAX", "MIN", "NOT", "WS"
 	};
 	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
 
@@ -279,7 +279,7 @@ public partial class MyExcelParser : Parser {
 		}
 	}
 	public partial class MinExprContext : ExpressionContext {
-		public ITerminalNode MIN() { return GetToken(MyExcelParser.MIN, 0); }
+		public IToken operatorToken;
 		public ITerminalNode LPAREN() { return GetToken(MyExcelParser.LPAREN, 0); }
 		public ExpressionContext[] expression() {
 			return GetRuleContexts<ExpressionContext>();
@@ -287,8 +287,8 @@ public partial class MyExcelParser : Parser {
 		public ExpressionContext expression(int i) {
 			return GetRuleContext<ExpressionContext>(i);
 		}
-		public ITerminalNode COMA() { return GetToken(MyExcelParser.COMA, 0); }
 		public ITerminalNode RPAREN() { return GetToken(MyExcelParser.RPAREN, 0); }
+		public ITerminalNode MIN() { return GetToken(MyExcelParser.MIN, 0); }
 		public MinExprContext(ExpressionContext context) { CopyFrom(context); }
 		public override void EnterRule(IParseTreeListener listener) {
 			IMyExcelListener typedListener = listener as IMyExcelListener;
@@ -305,7 +305,7 @@ public partial class MyExcelParser : Parser {
 		}
 	}
 	public partial class MaxExprContext : ExpressionContext {
-		public ITerminalNode MAX() { return GetToken(MyExcelParser.MAX, 0); }
+		public IToken operatorToken;
 		public ITerminalNode LPAREN() { return GetToken(MyExcelParser.LPAREN, 0); }
 		public ExpressionContext[] expression() {
 			return GetRuleContexts<ExpressionContext>();
@@ -313,8 +313,8 @@ public partial class MyExcelParser : Parser {
 		public ExpressionContext expression(int i) {
 			return GetRuleContext<ExpressionContext>(i);
 		}
-		public ITerminalNode COMA() { return GetToken(MyExcelParser.COMA, 0); }
 		public ITerminalNode RPAREN() { return GetToken(MyExcelParser.RPAREN, 0); }
+		public ITerminalNode MAX() { return GetToken(MyExcelParser.MAX, 0); }
 		public MaxExprContext(ExpressionContext context) { CopyFrom(context); }
 		public override void EnterRule(IParseTreeListener listener) {
 			IMyExcelListener typedListener = listener as IMyExcelListener;
@@ -331,12 +331,13 @@ public partial class MyExcelParser : Parser {
 		}
 	}
 	public partial class NotExprContext : ExpressionContext {
-		public ITerminalNode NOT() { return GetToken(MyExcelParser.NOT, 0); }
+		public IToken operatorToken;
 		public ITerminalNode LPAREN() { return GetToken(MyExcelParser.LPAREN, 0); }
 		public ExpressionContext expression() {
 			return GetRuleContext<ExpressionContext>(0);
 		}
 		public ITerminalNode RPAREN() { return GetToken(MyExcelParser.RPAREN, 0); }
+		public ITerminalNode NOT() { return GetToken(MyExcelParser.NOT, 0); }
 		public NotExprContext(ExpressionContext context) { CopyFrom(context); }
 		public override void EnterRule(IParseTreeListener listener) {
 			IMyExcelListener typedListener = listener as IMyExcelListener;
@@ -423,10 +424,10 @@ public partial class MyExcelParser : Parser {
 				_localctx = new MinExprContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				State = 12; Match(MIN);
+				State = 12; ((MinExprContext)_localctx).operatorToken = Match(MIN);
 				State = 13; Match(LPAREN);
 				State = 14; expression(0);
-				State = 15; Match(COMA);
+				State = 15; Match(T__0);
 				State = 16; expression(0);
 				State = 17; Match(RPAREN);
 				}
@@ -436,10 +437,10 @@ public partial class MyExcelParser : Parser {
 				_localctx = new MaxExprContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				State = 19; Match(MAX);
+				State = 19; ((MaxExprContext)_localctx).operatorToken = Match(MAX);
 				State = 20; Match(LPAREN);
 				State = 21; expression(0);
-				State = 22; Match(COMA);
+				State = 22; Match(T__0);
 				State = 23; expression(0);
 				State = 24; Match(RPAREN);
 				}
@@ -449,7 +450,7 @@ public partial class MyExcelParser : Parser {
 				_localctx = new NotExprContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				State = 26; Match(NOT);
+				State = 26; ((NotExprContext)_localctx).operatorToken = Match(NOT);
 				State = 27; Match(LPAREN);
 				State = 28; expression(0);
 				State = 29; Match(RPAREN);
@@ -611,18 +612,18 @@ public partial class MyExcelParser : Parser {
 		"\x3\x3\x3\x3\x3\x3\x3\x3\x3\x3\x3\x3\x3\x3\x3\x3\x5\x3$\n\x3\x3\x3\x3"+
 		"\x3\x3\x3\x3\x3\x3\x3\x3\x3\x3\x3\x3\x3\x3\x3\x3\x3\x3\x3\x3\x3\a\x3\x32"+
 		"\n\x3\f\x3\xE\x3\x35\v\x3\x3\x3\x2\x2\x3\x4\x4\x2\x2\x4\x2\x2\x5\x3\x2"+
-		"\a\b\x3\x2\t\n\x3\x2\r\xF=\x2\x6\x3\x2\x2\x2\x4#\x3\x2\x2\x2\x6\a\x5\x4"+
-		"\x3\x2\a\b\a\x2\x2\x3\b\x3\x3\x2\x2\x2\t\n\b\x3\x1\x2\n\v\a\v\x2\x2\v"+
-		"\f\x5\x4\x3\x2\f\r\a\f\x2\x2\r$\x3\x2\x2\x2\xE\xF\a\x11\x2\x2\xF\x10\a"+
-		"\v\x2\x2\x10\x11\x5\x4\x3\x2\x11\x12\a\x13\x2\x2\x12\x13\x5\x4\x3\x2\x13"+
-		"\x14\a\f\x2\x2\x14$\x3\x2\x2\x2\x15\x16\a\x10\x2\x2\x16\x17\a\v\x2\x2"+
-		"\x17\x18\x5\x4\x3\x2\x18\x19\a\x13\x2\x2\x19\x1A\x5\x4\x3\x2\x1A\x1B\a"+
-		"\f\x2\x2\x1B$\x3\x2\x2\x2\x1C\x1D\a\x12\x2\x2\x1D\x1E\a\v\x2\x2\x1E\x1F"+
-		"\x5\x4\x3\x2\x1F \a\f\x2\x2 $\x3\x2\x2\x2!$\a\x3\x2\x2\"$\a\x4\x2\x2#"+
-		"\t\x3\x2\x2\x2#\xE\x3\x2\x2\x2#\x15\x3\x2\x2\x2#\x1C\x3\x2\x2\x2#!\x3"+
-		"\x2\x2\x2#\"\x3\x2\x2\x2$\x33\x3\x2\x2\x2%&\f\v\x2\x2&\'\a\x6\x2\x2\'"+
-		"\x32\x5\x4\x3\f()\f\n\x2\x2)*\t\x2\x2\x2*\x32\x5\x4\x3\v+,\f\t\x2\x2,"+
-		"-\t\x3\x2\x2-\x32\x5\x4\x3\n./\f\b\x2\x2/\x30\t\x4\x2\x2\x30\x32\x5\x4"+
+		"\b\t\x3\x2\n\v\x3\x2\xE\x10=\x2\x6\x3\x2\x2\x2\x4#\x3\x2\x2\x2\x6\a\x5"+
+		"\x4\x3\x2\a\b\a\x2\x2\x3\b\x3\x3\x2\x2\x2\t\n\b\x3\x1\x2\n\v\a\f\x2\x2"+
+		"\v\f\x5\x4\x3\x2\f\r\a\r\x2\x2\r$\x3\x2\x2\x2\xE\xF\a\x12\x2\x2\xF\x10"+
+		"\a\f\x2\x2\x10\x11\x5\x4\x3\x2\x11\x12\a\x3\x2\x2\x12\x13\x5\x4\x3\x2"+
+		"\x13\x14\a\r\x2\x2\x14$\x3\x2\x2\x2\x15\x16\a\x11\x2\x2\x16\x17\a\f\x2"+
+		"\x2\x17\x18\x5\x4\x3\x2\x18\x19\a\x3\x2\x2\x19\x1A\x5\x4\x3\x2\x1A\x1B"+
+		"\a\r\x2\x2\x1B$\x3\x2\x2\x2\x1C\x1D\a\x13\x2\x2\x1D\x1E\a\f\x2\x2\x1E"+
+		"\x1F\x5\x4\x3\x2\x1F \a\r\x2\x2 $\x3\x2\x2\x2!$\a\x4\x2\x2\"$\a\x5\x2"+
+		"\x2#\t\x3\x2\x2\x2#\xE\x3\x2\x2\x2#\x15\x3\x2\x2\x2#\x1C\x3\x2\x2\x2#"+
+		"!\x3\x2\x2\x2#\"\x3\x2\x2\x2$\x33\x3\x2\x2\x2%&\f\v\x2\x2&\'\a\a\x2\x2"+
+		"\'\x32\x5\x4\x3\f()\f\n\x2\x2)*\t\x2\x2\x2*\x32\x5\x4\x3\v+,\f\t\x2\x2"+
+		",-\t\x3\x2\x2-\x32\x5\x4\x3\n./\f\b\x2\x2/\x30\t\x4\x2\x2\x30\x32\x5\x4"+
 		"\x3\t\x31%\x3\x2\x2\x2\x31(\x3\x2\x2\x2\x31+\x3\x2\x2\x2\x31.\x3\x2\x2"+
 		"\x2\x32\x35\x3\x2\x2\x2\x33\x31\x3\x2\x2\x2\x33\x34\x3\x2\x2\x2\x34\x5"+
 		"\x3\x2\x2\x2\x35\x33\x3\x2\x2\x2\x5#\x31\x33";

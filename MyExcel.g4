@@ -5,14 +5,14 @@
 */
 compileUnit : expression EOF;
 expression :
-  LPAREN expression RPAREN #ParenthesizedExpr
+LPAREN expression RPAREN #ParenthesizedExpr
 | expression EXPONENT expression #ExponentialExpr
 | expression operatorToken=(MULTIPLY | DIVIDE) expression #MultiplicativeExpr
 | expression operatorToken=(ADD | SUBTRACT) expression #AdditiveExpr
 | expression operatorToken=(EQUALITY | GREATER | LESS) expression #ComparativeExpr
-| MIN LPAREN expression COMA expression RPAREN #MinExpr
-| MAX LPAREN expression COMA expression RPAREN #MaxExpr
-| NOT LPAREN expression RPAREN #NotExpr
+| operatorToken=MIN LPAREN expression ',' expression RPAREN #MinExpr
+| operatorToken=MAX LPAREN expression ',' expression RPAREN #MaxExpr
+| operatorToken=NOT LPAREN expression RPAREN #NotExpr
 | NUMBER #NumberExpr
 | IDENTIFIER #IdentifierExpr
 ;
@@ -35,5 +35,4 @@ LESS: '<';
 MAX: 'max';
 MIN: 'min';
 NOT: 'not';
-COMA: ',';
 WS : [ \t\r\n] -> channel(HIDDEN);

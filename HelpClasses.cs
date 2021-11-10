@@ -2,88 +2,57 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
-using System.Text.RegularExpressions;
+
 
 namespace MyExcel
 {
-    public partial class ExcelForm : Form
+    public class Cell
     {
-        private void RenameWindow()
-        {
-            if (CurrentFile != null)
-            {
-                Text = "MyExcel | " + CurrentFile;
-            }
-            else
-            {
-                Text = "MyExcel";
-            }
-        }
-        private void LoadTable(string path)
-        {
-            TextReader TextReader = new StreamReader(path);
-            string line = TextReader.ReadLine();
-            string[] size = line.Split(',');
-            InitTable(Convert.ToInt32(size[0]), Convert.ToInt32(size[1]));
-            var table = new Dictionary<string, string>();
-            while ((line = TextReader.ReadLine()) != null)
-            {
-                string[] arr = line.Split(',');
-                table.Add(arr[0], arr[1]);
-            }
-            foreach (var item in table)
-            {
-                MyExcelVisitor.tableIdentifier[item.Key] = new Cell(Convert.ToString(item.Key[0]),
-                                                                    Convert.ToInt32(item.Key[1]));
-                if (item.Value == "null")
-                {
-                    MyExcelVisitor.tableIdentifier[item.Key].Value = null;
-                }
-                else
-                {
-                    MyExcelVisitor.tableIdentifier[item.Key].Value = item.Value;
+        private string letter;
+        private int number;
 
-                    MainDataView.Rows[Convert.ToInt32(item.Key[1]) - 49].Cells[Convert.ToInt32(item.Key[0]) - 65].Value = item.Value;
-                }
-            }
-            TextReader.Close();
-        }
-        private void SaveOrNot(object sender, EventArgs e)
+        private string _value;
+        public string Value
         {
-            SaveOrNot SONForm = new SaveOrNot();
-            DialogResult dialogresult = SONForm.ShowDialog();
-            if (dialogresult == DialogResult.Yes)
-            {
-                if (CurrentFile != null)
-                {
-                    SaveLabel_Click(sender, e);
-                }
-                else
-                {
-                    SaveAsLabel_Click(sender, e);
-                }
-            }
-            SONForm.Dispose();
+            get => _value;
+            set => _value = value;
         }
-        private void CreateCells()
+
+        private string _name;
+        public string Name => _name;
+
+
+        public Cell(string letter, int number)
         {
-            MainDataView.ClearSelection();
-            for (int i = 0; i < MainDataView.Rows.Count; i++)
+            this.letter = letter;
+            this.number = number;
+            _name = this.letter + Convert.ToString(this.number);
+            _value = null;
+        }
+    }
+    public static class HelpClass
+    {
+        public static void BuildForm(dynamic form)
+        {
+            form.SaveFileDialog.Filter = "Table files(*.csv)|*.csv|All files(*.*)|*.*";
+            form.OpenFileDialog.Filter = "Table files(*.csv)|*.csv|All files(*.*)|*.*";
+            ExcelForm.Labels["CHOOSE_LANGUAGE"] = "Choose language:";
+            HelpClass.InitTable(form);
+            string ConfigPath = "..\\..\\..\\config.csv";
+            try
             {
-                for (int j = 0; j < MainDataView.Columns.Count; j++)
-                {
-                    Cell cell = new Cell(MainDataView.Columns[j].Name, i + 1);
-                    MyExcelVisitor.tableIdentifier[cell.Name] = cell;
-                }
+                var config = File.ReadLines(ConfigPath).Select(line => line.Split(',')).ToDictionary(line => line[0], line => line[1]);
+                HelpClass.InitLabels(form, config["language"]);
+            }
+            catch
+            {
+                HelpClass.InitTable(form);
             }
         }
-        private void InitLabels(string FileName = null)
+        public static void InitLabels(dynamic form, string FileName = null)
         {
             string path = "";
             string LangFile = "";
@@ -109,71 +78,117 @@ namespace MyExcel
                 file.WriteLine("language," + LangFile);
                 file.Close();
             }
-            Labels = File.ReadLines(path).Select(line => line.Split(',')).ToDictionary(line => line[0], line => line[1]);
-            CoordLabel.Text = Labels["SELECTED_CELL"];
-            NewLabel.Text = Labels["NEW"];
-            OpenLabel.Text = Labels["OPEN"];
-            SaveLabel.Text = Labels["SAVE"];
-            SaveAsLabel.Text = Labels["SAVE_AS"];
-            PropsLabel.Text = Labels["PROPPERTIES"];
-            ReevaluateBtn.Text = Labels["REEVALUATE"];
-            AddColBtn.Text = Labels["ADD_COLUMN"];
-            RemColBtn.Text = Labels["REMOVE_COLUMN"];
-            AddRowBtn.Text = Labels["ADD_ROW"];
-            RemRowBtn.Text = Labels["REMOVE_ROW"];
-            AboutLabel.Text = Labels["ABOUT_LABEL"];
-            HelpLabel.Text = Labels["HELP_LABEL"];
+            ExcelForm.Labels = File.ReadLines(path).Select(line => line.Split(',')).ToDictionary(line => line[0], line => line[1]);
+            form.CoordLabel.Text = ExcelForm.Labels["SELECTED_CELL"];
+            form.NewLabel.Text = ExcelForm.Labels["NEW"];
+            form.OpenLabel.Text = ExcelForm.Labels["OPEN"];
+            form.SaveLabel.Text = ExcelForm.Labels["SAVE"];
+            form.SaveAsLabel.Text = ExcelForm.Labels["SAVE_AS"];
+            form.PropsLabel.Text = ExcelForm.Labels["PROPPERTIES"];
+            form.ReevaluateBtn.Text = ExcelForm.Labels["REEVALUATE"];
+            form.AddColBtn.Text = ExcelForm.Labels["ADD_COLUMN"];
+            form.RemColBtn.Text = ExcelForm.Labels["REMOVE_COLUMN"];
+            form.AddRowBtn.Text = ExcelForm.Labels["ADD_ROW"];
+            form.RemRowBtn.Text = ExcelForm.Labels["REMOVE_ROW"];
+            form.AboutLabel.Text = ExcelForm.Labels["ABOUT_LABEL"];
+            form.HelpLabel.Text = ExcelForm.Labels["HELP_LABEL"];
         }
-        public string GetCurrentCellName()
+        public static void InitTable(dynamic form, int? Rows = null, int? Columns = null)
         {
-            return MainDataView.CurrentCell.OwningColumn.Name + Convert.ToString(MainDataView.CurrentCell.RowIndex + 1);
-        }
-        private void InitTable(int? Rows = null, int? Columns = null)
-        {
-            MainDataView.Rows.Clear();
-            MainDataView.Columns.Clear();
-            MainDataView.Refresh();
-            MainDataView.RowHeadersWidth = 50;
+            form.EditorSpace.Clear();
+            form.MainDataView.Rows.Clear();
+            form.MainDataView.Columns.Clear();
+            form.MainDataView.Refresh();
+            form.MainDataView.RowHeadersWidth = 50;
             DataGridViewColumn Column = new DataGridViewColumn();
-            for (int i = 0; Columns != null ? i < Columns : (i + 1) * Column.Width < MainDataView.Width; i++)
+            for (int i = 0; Columns != null ? i < Columns : (i + 1) * Column.Width < form.MainDataView.Width; i++)
             {
                 Column = new DataGridViewTextBoxColumn();
                 Column.HeaderText = Convert.ToString(Convert.ToChar(65 + i));
                 Column.Name = Convert.ToString(Convert.ToChar(65 + i));
-                MainDataView.Columns.Add(Column);
+                form.MainDataView.Columns.Add(Column);
             }
-            for (int j = 0; Rows != null ? j < Rows : (j + 2) * MainDataView.RowTemplate.Height < MainDataView.Height; j++)
+            for (int j = 0; Rows != null ? j < Rows : (j + 2) * form.MainDataView.RowTemplate.Height < form.MainDataView.Height; j++)
             {
                 DataGridViewRow row = new DataGridViewRow();
                 row.HeaderCell.Value = Convert.ToString(j + 1);
-                MainDataView.Rows.Add(row);
+                form.MainDataView.Rows.Add(row);
 
             }
-            CreateCells();
+            CreateCells(form);
         }
-    }
-    public class Cell
-    {
-        private string letter;
-        private int number;
-
-        private string _value;
-        public string Value
+        public static void CreateCells(dynamic form)
         {
-            get => _value;
-            set => _value = value;
+            form.MainDataView.ClearSelection();
+            for (int i = 0; i < form.MainDataView.Rows.Count; i++)
+            {
+                for (int j = 0; j < form.MainDataView.Columns.Count; j++)
+                {
+                    Cell cell = new Cell(form.MainDataView.Columns[j].Name, i + 1);
+                    MyExcelVisitor.tableIdentifier[cell.Name] = cell;
+                }
+            }
         }
-
-        private string _name;
-        public string Name => _name;
-
-
-        public Cell(string letter, int number)
+        public static void SaveOrNot(dynamic form, object sender, EventArgs e)
         {
-            this.letter = letter;
-            this.number = number;
-            _name = this.letter + Convert.ToString(this.number);
-            _value = null;
+            SaveOrNot SONForm = new SaveOrNot();
+            DialogResult dialogresult = SONForm.ShowDialog();
+            if (dialogresult == DialogResult.Yes)
+            {
+                if (form.CurrentFile != null)
+                {
+                    Tools.SaveLabel_Click(form, sender, e);
+                }
+                else
+                {
+                    Tools.SaveAsLabel_Click(form, sender, e);
+                }
+            }
+            SONForm.Dispose();
+        }
+        public static string GetCurrentCellName(dynamic form)
+        {
+            return form.MainDataView.CurrentCell.OwningColumn.Name + Convert.ToString(form.MainDataView.CurrentCell.RowIndex + 1);
+        }
+        public static void LoadTable(dynamic form, string path)
+        {
+            TextReader TextReader = new StreamReader(path);
+            string line = TextReader.ReadLine();
+            string[] size = line.Split(',');
+            InitTable(form, Convert.ToInt32(size[0]), Convert.ToInt32(size[1]));
+            var table = new Dictionary<string, string>();
+            while ((line = TextReader.ReadLine()) != null)
+            {
+                string[] arr = line.Split(',');
+                table.Add(arr[0], arr[1]);
+            }
+            foreach (var item in table)
+            {
+                MyExcelVisitor.tableIdentifier[item.Key] = new Cell(Convert.ToString(item.Key[0]),
+                                                                    Convert.ToInt32(item.Key[1]));
+                if (item.Value == "null")
+                {
+                    MyExcelVisitor.tableIdentifier[item.Key].Value = null;
+                }
+                else
+                {
+                    MyExcelVisitor.tableIdentifier[item.Key].Value = item.Value;
+
+                    form.MainDataView.Rows[Convert.ToInt32(item.Key[1]) - 49].Cells[Convert.ToInt32(item.Key[0]) - 65].Value = item.Value;
+                }
+            }
+            TextReader.Close();
+        }
+        public static void RenameWindow(dynamic form)
+        {
+            if (form.CurrentFile != null)
+            {
+                form.Text = "MyExcel | " + form.CurrentFile;
+            }
+            else
+            {
+                form.Text = "MyExcel";
+            }
         }
     }
 }

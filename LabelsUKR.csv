@@ -9,4 +9,14 @@ CHOOSE_LANGUAGE,Виберіть мову:
 YES,Так
 NO,Ні
 INPUT_FILE_NAME,Впишіть ім'я файлу
-REEVALUATE,Перерахувати
+REEVALUATE,Розрахувати
+ADD_ROW,Додати рядок
+REMOVE_ROW,Видалити рядок
+ADD_COLUMN,Додати стовбчик
+REMOVE_COLUMN,Видалити стовбчик
+OPEN_ERROR,Помилка при відкриванні файлу
+ABOUT_LABEL,Про програму
+ABOUT_TEXT,текст про програму
+HELP_LABEL,Допомога
+HELP_TEXT,текст допомоги
+SAVE_ERROR,Помилка при зберіганні файлу
