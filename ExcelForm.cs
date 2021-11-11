@@ -16,9 +16,17 @@ namespace MyExcel
             InitializeComponent();
             HelpClass.BuildForm(this);
         }
+        private void ExcelForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Tools.ExcelForm_FormClosing(this, sender, e);
+        }
         private void MainDataView_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             Tools.MainDataView_CellClick(this, sender, e);
+        }
+        private void MainDataView_CellLeave(object sender, DataGridViewCellEventArgs e)
+        {
+            Tools.MainDataView_CellLeave(this, sender, e);
         }
         private void EditorSpace_TextChanged(object sender, EventArgs e)
         {
@@ -28,18 +36,6 @@ namespace MyExcel
         private void EditorSpace_Click(object sender, EventArgs e)
         {
             Tools.EditorSpace_Click(this, sender, e);
-        }
-        private void MainDataView_CellLeave(object sender, DataGridViewCellEventArgs e)
-        {
-            Tools.MainDataView_CellLeave(this, sender, e);
-        }
-        private void ExcelForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            Tools.ExcelForm_FormClosing(this, sender, e);
-        }
-        private void ReevaluateBtn_Click(object sender, EventArgs e)
-        {
-            Tools.ReevaluateBtn_Click(this, sender, e);
         }
         private void NewLabel_Click(object sender, EventArgs e)
         {
@@ -61,23 +57,6 @@ namespace MyExcel
         {
             Tools.PropsLabel_Click(this, sender, e);
         }
-        private void AddRowBtn_Click(object sender, EventArgs e)
-        {
-            Tools.AddRowBtn_Click(this, sender, e);
-        }
-        private void RemRowBtn_Click(object sender, EventArgs e)
-        {
-            Tools.RemRowBtn_Click(this, sender, e);
-        }
-        private void AddColBtn_Click(object sender, EventArgs e)
-        {
-            Tools.AddColBtn_Click(this, sender, e);
-        }
-        private void RemColBtn_Click(object sender, EventArgs e)
-        {
-            Tools.RemColBtn_Click(this, sender, e);
-
-        }
         private void AboutLabel_Click(object sender, EventArgs e)
         {
             Tools.AboutLabel_Click(this, sender, e);
@@ -85,6 +64,27 @@ namespace MyExcel
         private void HelpLabel_Click(object sender, EventArgs e)
         {
             Tools.HelpLabel_Click(this, sender, e);
+        }
+        private void AddRowBtn_Click(object sender, EventArgs e)
+        {
+            Tools.AddRowBtn_Click(this, sender, e);
+        }
+        private void AddColBtn_Click(object sender, EventArgs e)
+        {
+            Tools.AddColBtn_Click(this, sender, e);
+        }
+        private void RemRowBtn_Click(object sender, EventArgs e)
+        {
+            Tools.RemRowBtn_Click(this, sender, e);
+        }
+        private void RemColBtn_Click(object sender, EventArgs e)
+        {
+            Tools.RemColBtn_Click(this, sender, e);
+
+        }
+        private void ReevaluateBtn_Click(object sender, EventArgs e)
+        {
+            Tools.ReevaluateBtn_Click(this, sender, e);
         }
 
     }

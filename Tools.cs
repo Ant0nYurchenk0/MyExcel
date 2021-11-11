@@ -10,6 +10,10 @@ namespace MyExcel
 {
     public static class Tools
     {
+        public static void ExcelForm_FormClosing(dynamic form, object sender, FormClosingEventArgs e)
+        {
+            HelpClass.SaveOrNot(form, sender, e);
+        }
         public static void MainDataView_CellClick(dynamic form, object sender, DataGridViewCellEventArgs e)
         {
             try
@@ -28,6 +32,10 @@ namespace MyExcel
                 form.CoordinateBox.Text = HelpClass.GetCurrentCellName(form);
 
             }
+        }
+        public static void MainDataView_CellLeave(dynamic form, object sender, DataGridViewCellEventArgs e)
+        {
+            ReevaluateBtn_Click(form, sender, e);
         }
         public static void EditorSpace_TextChanged(dynamic form, object sender, EventArgs e)
         {
@@ -67,40 +75,6 @@ namespace MyExcel
         public static void EditorSpace_Click(dynamic form, object sender, EventArgs e)
         {
             form.PreviousCell = form.MainDataView.Rows[form.MainDataView.CurrentCell.RowIndex].Cells[form.MainDataView.CurrentCell.ColumnIndex];
-        }
-        public static void MainDataView_CellLeave(dynamic form, object sender, DataGridViewCellEventArgs e)
-        {
-            ReevaluateBtn_Click(form, sender, e);
-        }
-        public static void ExcelForm_FormClosing(dynamic form, object sender, FormClosingEventArgs e)
-        {
-            HelpClass.SaveOrNot(form, sender, e);
-        }
-        public static void ReevaluateBtn_Click(dynamic form, object sender, EventArgs e)
-        {
-            for (int i = 0; i < form.MainDataView.Rows.Count; i++)
-            {
-                for (int j = 0; j < form.MainDataView.Columns.Count; j++)
-                {
-                    if (form.MainDataView.Rows[i].Cells[j] != null &&
-                        form.MainDataView.Rows[i].Cells[j].Value != null &&
-                        form.MainDataView.Rows[i].Cells[j].Value.ToString() != "")
-                    {
-                        string CellName = form.MainDataView.Rows[i].Cells[j].OwningColumn.Name + Convert.ToString(i + 1);
-                        if (MyExcelVisitor.tableIdentifier.TryGetValue(CellName, out Cell cell))
-                        {
-                            try
-                            {
-                                form.MainDataView.Rows[i].Cells[j].Value = Calculator.Evaluate(cell.Value);
-                            }
-                            catch
-                            {
-                                form.MainDataView.Rows[i].Cells[j].Value = "ERROR";
-                            }
-                        }
-                    }
-                }
-            }
         }
         public static void NewLabel_Click(dynamic form, object sender, EventArgs e)
         {
@@ -179,6 +153,18 @@ namespace MyExcel
         {
             HelpClass.InitLabels(form);
         }
+        public static void AboutLabel_Click(dynamic form, object sender, EventArgs e)
+        {
+            About AFrom = new About();
+            AFrom.ShowDialog();
+            AFrom.Dispose();
+        }
+        public static void HelpLabel_Click(dynamic form, object sender, EventArgs e)
+        {
+            Help HForm = new Help();
+            HForm.ShowDialog(); ;
+            HForm.Dispose();
+        }
         public static void AddRowBtn_Click(dynamic form, object sender, EventArgs e)
         {
             var row = new DataGridViewRow();
@@ -197,19 +183,6 @@ namespace MyExcel
                 Cell cell = new Cell(form.MainDataView.Columns[i].Name, form.MainDataView.RowCount);
                 MyExcelVisitor.tableIdentifier[cell.Name] = cell;
             }
-        }
-        public static void RemRowBtn_Click(dynamic form,object sender, EventArgs e)
-        {
-            try
-            {
-                form.MainDataView.Rows.RemoveAt(form.MainDataView.RowCount - 1);
-                for (int i = 0; i < form.MainDataView.Columns.Count; i++)
-                {
-                    Cell cell = new Cell(form.MainDataView.Columns[i].Name, form.MainDataView.RowCount);
-                    MyExcelVisitor.tableIdentifier.Remove(cell.Name);
-                }
-            }
-            catch { }
         }
         public static void AddColBtn_Click(dynamic form, object sender, EventArgs e)
         {
@@ -235,6 +208,19 @@ namespace MyExcel
                 MyExcelVisitor.tableIdentifier[cell.Name] = cell;
             }
         }
+        public static void RemRowBtn_Click(dynamic form,object sender, EventArgs e)
+        {
+            try
+            {
+                form.MainDataView.Rows.RemoveAt(form.MainDataView.RowCount - 1);
+                for (int i = 0; i < form.MainDataView.Columns.Count; i++)
+                {
+                    Cell cell = new Cell(form.MainDataView.Columns[i].Name, form.MainDataView.RowCount);
+                    MyExcelVisitor.tableIdentifier.Remove(cell.Name);
+                }
+            }
+            catch { }
+        }
         public static void RemColBtn_Click(dynamic form, object sender, EventArgs e)
         {
             try
@@ -249,16 +235,31 @@ namespace MyExcel
             catch { }
 
         }
-        public static void AboutLabel_Click(dynamic form, object sender, EventArgs e)
+        public static void ReevaluateBtn_Click(dynamic form, object sender, EventArgs e)
         {
-            About AFrom = new About();
-            AFrom.ShowDialog();
-            AFrom.Dispose();
-        }
-        public static void HelpLabel_Click(dynamic form, object sender, EventArgs e)
-        {
-            Help HForm = new Help();
-            HForm.Show();
+            for (int i = 0; i < form.MainDataView.Rows.Count; i++)
+            {
+                for (int j = 0; j < form.MainDataView.Columns.Count; j++)
+                {
+                    if (form.MainDataView.Rows[i].Cells[j] != null &&
+                        form.MainDataView.Rows[i].Cells[j].Value != null &&
+                        form.MainDataView.Rows[i].Cells[j].Value.ToString() != "")
+                    {
+                        string CellName = form.MainDataView.Rows[i].Cells[j].OwningColumn.Name + Convert.ToString(i + 1);
+                        if (MyExcelVisitor.tableIdentifier.TryGetValue(CellName, out Cell cell))
+                        {
+                            try
+                            {
+                                form.MainDataView.Rows[i].Cells[j].Value = Calculator.Evaluate(cell.Value);
+                            }
+                            catch
+                            {
+                                form.MainDataView.Rows[i].Cells[j].Value = "ERROR";
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

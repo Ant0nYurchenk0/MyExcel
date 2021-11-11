@@ -15,7 +15,6 @@ C:\Users\anyur\Documents\prog\C#\MyExcel\obj\Debug\netcoreapp3.1\MyExcel.csproj.
 C:\Users\anyur\Documents\prog\C#\MyExcel\obj\Debug\netcoreapp3.1\MyExcel.About.resources
 C:\Users\anyur\Documents\prog\C#\MyExcel\obj\Debug\netcoreapp3.1\MyExcel.ChooseLang.resources
 C:\Users\anyur\Documents\prog\C#\MyExcel\obj\Debug\netcoreapp3.1\MyExcel.ExcelForm.resources
-C:\Users\anyur\Documents\prog\C#\MyExcel\obj\Debug\netcoreapp3.1\MyExcel.FileName.resources
 C:\Users\anyur\Documents\prog\C#\MyExcel\obj\Debug\netcoreapp3.1\MyExcel.Help.resources
 C:\Users\anyur\Documents\prog\C#\MyExcel\obj\Debug\netcoreapp3.1\MyExcel.SaveOrNot.resources
 C:\Users\anyur\Documents\prog\C#\MyExcel\obj\Debug\netcoreapp3.1\MyExcel.csproj.GenerateResource.cache

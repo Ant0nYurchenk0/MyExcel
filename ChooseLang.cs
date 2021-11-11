@@ -8,11 +8,14 @@ namespace MyExcel
         public ChooseLang()
         {
             InitializeComponent();
+            InitLabels();
+        }
+        private void InitLabels()
+        {
             if (ExcelForm.Labels.TryGetValue("CHOOSE_LANGUAGE", out string chooseLangLabel))
             {
                 ChooseLangLabel.Text = chooseLangLabel;
                 Text = chooseLangLabel;
-
             }
         }
 

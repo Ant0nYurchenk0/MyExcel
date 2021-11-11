@@ -16,7 +16,7 @@ ADD_COLUMN,Add column
 REMOVE_COLUMN,Remove column
 OPEN_ERROR,Error encountered during opening the file
 ABOUT_LABEL,About
-ABOUT_TEXT,some aboout text
+ABOUT_TEXT,Done by Anton Yurchenko K-24. Lab 1 Task 45
 HELP_LABEL,Help
-HELP_TEXT,some help text
+HELP_TEXT,In order to add an expression to a cell select a cell and type in your expression into the f(x)= line. The program supports arithmetic operations + - * /; logic operations < = > and not(); and functions max() and min() taking two parameters. Logic operations retirn integer values 0 and 1. A user can add or remove rows and columns in the end of the table using the correspoding buttons. A user can save a table to a file; create new table; and open a .csv file with a table
 SAVE_ERROR,Error encountered during saving the file

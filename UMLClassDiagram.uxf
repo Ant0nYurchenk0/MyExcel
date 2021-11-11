@@ -1,0 +1,102 @@
+<diagram program="umletino" version="14.4.0-SNAPSHOT"><zoom_level>10</zoom_level><help_text>lt=&amp;lt;-
+</help_text><element><id>UMLClass</id><coordinates><x>197</x><y>0</y><w>210</w><h>320</h></coordinates><panel_attributes>ExcelForm
+--
++ Labels Dictionary&lt;string, string&gt;
++ CurrentFile string
++ Previous Cell DataGridViewCell
+--
+- MainDataView_CellClick
+- MainDataView_CellLeave
+- EditorSpace_TextChange
+- EditorSpace_Click
+- NewLabel_Click
+- OpenLabel_Click
+- SaveLabel_Click
+- SaveAsLabel_Click
+- PropsLabel_Click
+- AboutLabel_Click
+- HelpLabel_Click
+- AddRowBtn_Click
+- AddColBtn_Click
+- RemColBtn_Click
+- RemRowBtn_Click
+- ReevaluateBtn_Click</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>477</x><y>0</y><w>210</w><h>320</h></coordinates><panel_attributes>&lt;&lt;static&gt;&gt;
+Tools
+--
+--
++ MainDataView_CellClick
++ MainDataView_CellLeave
++ EditorSpace_TextChange
++ EditorSpace_Click
++ NewLabel_Click
++ OpenLabel_Click
++ SaveLabel_Click
++ SaveAsLabel_Click
++ PropsLabel_Click
++ AboutLabel_Click
++ HelpLabel_Click
++ AddRowBtn_Click
++ AddColBtn_Click
++ RemColBtn_Click
++ RemRowBtn_Click
++ ReevaluateBtn_Click</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>757</x><y>0</y><w>210</w><h>200</h></coordinates><panel_attributes>&lt;&lt;static&gt;&gt;
+HelpClass
+--
+--
++ BuildForm
++ InitTable
++ InitLabels
++ CreateCells
++ SaveOrNot
++ GetCurrentCellName
++ LoadTable
++ RenameWindow</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>537</x><y>530</y><w>150</w><h>110</h></coordinates><panel_attributes>Cell
+--
+- letter string
+- number string
++ Value string
++ Name string
+--
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>477</x><y>392</y><w>190</w><h>110</h></coordinates><panel_attributes>&lt;&lt;static&gt;&gt;
+Calculator
+--
+- Registry Dictionary&lt;string, bool&gt;
+--
++ Evaluate(string expression)
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>197</x><y>392</y><w>230</w><h>250</h></coordinates><panel_attributes>MyExcelVisitor
+--
++ tableIdentifier Dictionary&lt;string, Cell&gt; 
+--
++ VisitCompileUnit()
++ VisitNumberExpr()
++ VisitNotExpr()
++ VisitMaxExpr()
++ VisitMinExpr()
++ VisitIdentifierExpr()
++ VisitParenthesizedExpr()
++ VisitExponentialExpr()
++ VisitComparativeExpr()
++ VisitAdditiveExpr()
++ VisitMultiplicativeExpr()
+- WalkLeft()
+- WalkRight()
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>397</x><y>142</y><w>100</w><h>30</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;80;10</additional_attributes></element><element><id>Relation</id><coordinates><x>677</x><y>142</y><w>100</w><h>30</h></coordinates><panel_attributes>lt=&lt;..</panel_attributes><additional_attributes>80;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>550</x><y>312</y><w>30</w><h>100</h></coordinates><panel_attributes>lt=&lt;..</panel_attributes><additional_attributes>10;80;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>420</x><y>582</y><w>140</w><h>30</h></coordinates><panel_attributes>lt=&lt;..</panel_attributes><additional_attributes>120;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>670</x><y>310</y><w>30</w><h>240</h></coordinates><panel_attributes>lt=&lt;..</panel_attributes><additional_attributes>10;220;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>760</x><y>390</y><w>210</w><h>50</h></coordinates><panel_attributes>About
+--
+--
+- InitLabels()
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>760</x><y>490</y><w>210</w><h>50</h></coordinates><panel_attributes>Help
+--
+--
+- InitLabels()
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>760</x><y>270</y><w>210</w><h>50</h></coordinates><panel_attributes>SaveOrNot
+--
+--
+- InitLabels()
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>760</x><y>590</y><w>210</w><h>50</h></coordinates><panel_attributes>ChooseLang
+--
+--
+- InitLabels()
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>420</x><y>440</y><w>80</w><h>40</h></coordinates><panel_attributes>lt=&lt;-
+</panel_attributes><additional_attributes>10;20;60;20</additional_attributes></element><element><id>Relation</id><coordinates><x>680</x><y>310</y><w>100</w><h>120</h></coordinates><panel_attributes>lt=&lt;-
+</panel_attributes><additional_attributes>80;100;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>680</x><y>310</y><w>100</w><h>220</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>80;200;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>680</x><y>310</y><w>100</w><h>320</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>80;300;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>850</x><y>190</y><w>30</w><h>100</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>10;80;10;10</additional_attributes></element></diagram>
