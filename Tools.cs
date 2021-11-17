@@ -162,7 +162,7 @@ namespace MyExcel
         public static void HelpLabel_Click(dynamic form, object sender, EventArgs e)
         {
             Help HForm = new Help();
-            HForm.ShowDialog(); ;
+            HForm.ShowDialog();
             HForm.Dispose();
         }
         public static void AddRowBtn_Click(dynamic form, object sender, EventArgs e)

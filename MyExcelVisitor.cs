@@ -58,10 +58,10 @@ namespace MyExcel
                         Calculator.Registry[cell.Name] = true;
                         return Convert.ToDouble(Calculator.PrvtEvaluate(cell.Value));
                     }
-                    string errorMsg = "Error at '"+ cell.Name+ "'";
-                    throw new Exception(errorMsg);
                 }
             }
+            string errorMsg = "Error at '" + result + "'";
+            throw new Exception(errorMsg);
             return 0;
         }
         public override double VisitParenthesizedExpr(MyExcelParser.ParenthesizedExprContext context)
